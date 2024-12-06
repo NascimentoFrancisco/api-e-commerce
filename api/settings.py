@@ -1,13 +1,19 @@
 """Application default settings module."""
 
+import os
 from pathlib import Path
+from decouple import config
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = "django-insecure-#su&a!s5%)9%bww2foa4+l89ur_d6=1q=n+$aw7s7hxva4t4(d"
-DEBUG = True
+SECRET_KEY = config("SECRET_KEY")
+DEBUG = config("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in config("ALLOWED_HOSTS", default="").split(",")
+    if host.strip()
+]
 
 
 INSTALLED_APPS = [
@@ -37,6 +43,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+AUTH_USER_MODEL = "user.User"
+
 ROOT_URLCONF = "api.urls"
 
 TEMPLATES = [
@@ -59,8 +67,8 @@ WSGI_APPLICATION = "api.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": config("SQL_ENGINE"),
+        "NAME": BASE_DIR / config("SQL_NAME_DATABASE"),
     }
 }
 
@@ -86,5 +94,10 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

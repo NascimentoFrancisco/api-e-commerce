@@ -1,11 +1,14 @@
 [MAIN]
 
+ignore-patterns=^api/apps/user/migrations/.*\.py$
+
 disable=
       C0114, # missing-module-docstring
       E0015, # unrecognized-option
       R0903, # too-few-public-methods
-      R0913, #too-many-arguments
-      W0718, #broad-exception-caught
+      R0913, # too-many-arguments
+      W0718, # broad-exception-caught
+      E1121, # too-many-function-args 
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists
