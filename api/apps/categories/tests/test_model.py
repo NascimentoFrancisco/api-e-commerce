@@ -41,3 +41,6 @@ class CategoriesModelTest(TestCase):
 
     def test_updated_at(self):
         self.assertIsInstance(self.category.updated_at, datetime)
+
+    def test_slug_value(self):
+        self.assertEqual(self.category.slug, "teste")
