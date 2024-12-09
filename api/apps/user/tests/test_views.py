@@ -1,5 +1,8 @@
+import json
 from django.test import TestCase
 from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.test import APIClient
 from api.apps.user.models import User
 from api.apps.user.serizalizers import UpdateUserSerializer, UserSerializer
 
@@ -10,6 +13,14 @@ class UserViewsTest(TestCase):
         self.user = User(name="Teste", username="teste", email="teste@teste.com")
         self.user.set_password("teste#123")
         self.user.save()
+
+        refresh = RefreshToken.for_user(self.user)
+        self.access_token = str(refresh.access_token)
+
+        self.client = APIClient()
+
+    def authenticate(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
 
     def test_create_user_correct(self):
         data = {
@@ -41,10 +52,12 @@ class UserViewsTest(TestCase):
             "username": "testesCase",
             "email": "testescase@teste.com",
         }
+        self.authenticate()
         response = self.client.put(
-            f"/api/v1/user/{self.user.id}/", data, content_type="application/json"
+            f"/api/v1/user/{self.user.id}/",
+            json.dumps(data),
+            content_type="application/json",
         )
-
         user = User.objects.get(pk=self.user.id)
         serializer = UpdateUserSerializer(user)
 
@@ -52,6 +65,7 @@ class UserViewsTest(TestCase):
         self.assertEqual(response.json(), serializer.data)
 
     def test_get_user(self):
+        self.authenticate()
         respose = self.client.get(f"/api/v1/user/{self.user.id}/")
         user = User.objects.get(pk=self.user.id)
         serializer = UserSerializer(user)
@@ -60,6 +74,7 @@ class UserViewsTest(TestCase):
         self.assertEqual(respose.json(), serializer.data)
 
     def test_get_all_users(self):
+        self.authenticate()
         response = self.client.get("/api/v1/user/")
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
