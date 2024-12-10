@@ -1,8 +1,10 @@
+# pylint:disable=missing-function-docstring
+# pylint:disable=missing-class-docstring
 import json
 from django.test import TestCase
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.test import APIClient
+from rest_framework_simplejwt.tokens import RefreshToken
 from api.apps.user.models import User
 from api.apps.user.serizalizers import UpdateUserSerializer, UserSerializer
 
@@ -19,7 +21,7 @@ class UserViewsTest(TestCase):
 
         self.client = APIClient()
 
-    def authenticate(self):
+    def authenticate(self) -> None:
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
 
     def test_create_user_correct(self):

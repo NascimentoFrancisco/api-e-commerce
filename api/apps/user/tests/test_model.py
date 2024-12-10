@@ -1,3 +1,7 @@
+# pylint:disable=missing-function-docstring
+# pylint:disable=missing-class-docstring
+# pylint:disable=no-member
+# pylint:disable=protected-access
 from datetime import datetime
 from django.test import TestCase
 from api.apps.user.models import User
