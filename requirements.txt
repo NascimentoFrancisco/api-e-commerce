@@ -7,6 +7,7 @@ dill==0.3.9
 distlib==0.3.9
 Django==5.1.4
 djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
 filelock==3.16.1
 flake8==7.1.1
 identify==2.6.3
@@ -20,6 +21,7 @@ platformdirs==4.3.6
 pre_commit==4.0.1
 pycodestyle==2.12.1
 pyflakes==3.2.0
+PyJWT==2.10.1
 pylint==3.3.2
 python-decouple==3.8
 PyYAML==6.0.2
