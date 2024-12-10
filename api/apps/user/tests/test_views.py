@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 from api.apps.user.models import User
-from api.apps.user.serizalizers import UpdateUserSerializer, UserSerializer
+from api.apps.user.serializers import UpdateUserSerializer, UserSerializer
 
 
 class UserViewsTest(TestCase):
