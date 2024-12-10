@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from api.apps.user.models import User
-from api.apps.user.serizalizers import UserSerializer, UpdateUserSerializer
+from api.apps.user.serializers import UserSerializer, UpdateUserSerializer
 from api.apps.user.permissions import IsAuthenticatedOrJustPostMethod
 
 
