@@ -2,12 +2,14 @@
 # pylint:disable=missing-class-docstring
 # pylint:disable=no-member
 # pylint:disable=protected-access
+import unittest
 from io import BytesIO
 from django.test import TestCase
 from django.conf import settings
 from api.services.firebase.storage import HandleFirebaseStorage
 
 
+@unittest.skip("Skip integration tests during standard tests")
 class TestHandleFirebaseStorage(TestCase):
     def setUp(self):
         self.storage_handler = HandleFirebaseStorage()

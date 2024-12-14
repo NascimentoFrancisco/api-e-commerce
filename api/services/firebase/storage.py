@@ -55,3 +55,13 @@ class HandleFirebaseStorage:
         blob.make_public()
 
         return blob.public_url
+
+    def delete_blob(self, blob_name: str) -> None:
+        """Delete a file from Firebase Storage.
+        - parameters:
+            * blob_name: str image name in storage
+        - return:
+            * None
+        """
+        blob = self.bucket.blob(blob_name)
+        blob.delete()
