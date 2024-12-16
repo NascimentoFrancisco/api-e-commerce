@@ -1,0 +1,28 @@
+# pylint: disable=no-member
+from rest_framework import serializers
+from api.apps.shopping_cart.models import ShoppingCart
+from api.apps.products.serializers import ProductSerializer
+from api.apps.products.models import Product
+
+
+class ShoppingCartSerializer(serializers.ModelSerializer):
+    """Serializing class for the ShoppingCart Model attributes"""
+
+    id = serializers.UUIDField(read_only=True)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    product = ProductSerializer(read_only=True)
+    product_id = serializers.PrimaryKeyRelatedField(
+        queryset=Product.objects.all(), source="product", write_only=True
+    )
+
+    class Meta:
+        """Meta class of this serializer"""
+
+        model = ShoppingCart
+        ordering = ["created_at"]
+        fields = ["id", "user", "product", "product_id", "status"]
+
+    def create(self, validated_data):
+        user = self.context["request"].user
+        validated_data["user"] = user
+        return super().create(validated_data)

@@ -12,4 +12,9 @@ urlpatterns = [
     path("api/v1/user/", include("api.apps.user.urls"), name="user"),
     path("api/v1/categories/", include("api.apps.categories.urls"), name="categories"),
     path("api/v1/products/", include("api.apps.products.urls"), name="products"),
+    path(
+        "api/v1/shopping-cart/",
+        include("api.apps.shopping_cart.urls"),
+        name="shopping-cart",
+    ),
 ]
