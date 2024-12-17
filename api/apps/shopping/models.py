@@ -14,9 +14,13 @@ class Shopping(models.Model):
         Product, on_delete=models.CASCADE, null=False, blank=False
     )
     slug = models.SlugField("slug", unique=True, db_index=True)
-    quantity_products = models.PositiveIntegerField(default=0)
-    status = models.BooleanField(default=True)
-    payment_status = models.BooleanField(default=False)
+    quantity_products = models.PositiveIntegerField(
+        verbose_name="Quantidade de produtos", default=0
+    )
+    status = models.BooleanField(verbose_name="Finalizada ou em aberto", default=True)
+    payment_status = models.BooleanField(
+        verbose_name="Pagamento pendente ou finalizado", default=False
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

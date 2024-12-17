@@ -10,7 +10,7 @@ class Categories(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
     description = models.TextField(blank=False, null=False)
     slug = models.SlugField(unique=True)
-    status = models.BooleanField(default=True)
+    status = models.BooleanField(verbose_name="Ativa ou não ativa", default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
