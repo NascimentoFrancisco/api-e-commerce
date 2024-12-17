@@ -17,4 +17,5 @@ urlpatterns = [
         include("api.apps.shopping_cart.urls"),
         name="shopping-cart",
     ),
+    path("api/v1/shopping/", include("api.apps.shopping.urls"), name="shopping"),
 ]
