@@ -8,9 +8,11 @@ class User(AbstractUser, PermissionsMixin):
     """User and super user model"""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    username = models.CharField(max_length=100, unique=True)
-    name = models.CharField("Nome", max_length=255)
-    email = models.EmailField(max_length=255, unique=True)
+    username = models.CharField(
+        verbose_name="Nome de usuário", max_length=100, unique=True
+    )
+    name = models.CharField(verbose_name="Nome", max_length=255)
+    email = models.EmailField(verbose_name="Email", max_length=255, unique=True)
     is_superuser = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
