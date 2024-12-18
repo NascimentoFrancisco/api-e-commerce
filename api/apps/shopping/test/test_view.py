@@ -64,17 +64,35 @@ class ShoppingViewTest(TestCase):
     def authenticate(self) -> None:
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
 
-    def test_create(self):
+    def test_create_insufficient_amount_products(self):
         self.authenticate()
         data = {
             "product_id": self.product2.id,
-            "quantity_products": 3,
+            "quantity_products": 18,
             "status": True,
             "payment_status": False,
         }
         response = self.client.post("/api/v1/shopping/", data)
 
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json(),
+            {"detail": "A quantidade solicitada excede o estoque disponível."},
+        )
+
+    def test_create(self):
+        self.authenticate()
+        data = {
+            "product_id": self.product2.id,
+            "quantity_products": 1,
+            "status": True,
+            "payment_status": False,
+        }
+        response = self.client.post("/api/v1/shopping/", data)
+        self.product2.refresh_from_db()
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.product2.amount, 11)
 
     def test_get_shopping(self):
         self.authenticate()
@@ -146,6 +164,8 @@ class ShoppingViewTest(TestCase):
         self.user.save()
         self.authenticate()
         response = self.client.delete(f"/api/v1/shopping/{self.shopping.id}/")
+        self.product.refresh_from_db()
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Shopping.objects.exists())
+        self.assertEqual(self.product.amount, 14)
