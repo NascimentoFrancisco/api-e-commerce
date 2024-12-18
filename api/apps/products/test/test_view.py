@@ -20,6 +20,7 @@ class ProductViewTest(TestCase):
     def setUp(self):
         self.user = User(name="Teste", username="teste", email="teste@teste.com")
         self.user.set_password("teste#123")
+        self.user.is_superuser = True
         self.user.save()
 
         self.category = Categories(
@@ -86,7 +87,6 @@ class ProductViewTest(TestCase):
         )
 
     def test_get_product(self):
-        self.authenticate()
         response = self.client.get(f"/api/v1/products/{self.product.id}/")
         product = Product.objects.get(pk=self.product.id)
         product_response = response.json()
@@ -102,6 +102,30 @@ class ProductViewTest(TestCase):
         self.assertEqual(product_response["image_url"], product.image_url)
 
     def test_get_all_products(self):
+        response = self.client.get("/api/v1/products/")
+        products = Product.objects.all()
+        product_response = response.json()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for index, product in enumerate(products):
+            self.assertEqual(product_response[index]["name"], product.name)
+            self.assertEqual(
+                product_response[index]["user"]["id"], str(product.user.id)
+            )
+            self.assertEqual(
+                product_response[index]["description"], product.description
+            )
+            self.assertEqual(
+                product_response[index]["category"], str(product.category.id)
+            )
+            self.assertEqual(product_response[index]["amount"], product.amount)
+            self.assertEqual(
+                float(product_response[index]["price"]), float(product.price)
+            )
+            self.assertEqual(product_response[index]["status"], product.status)
+            self.assertEqual(product_response[index]["image_url"], product.image_url)
+
+    def test_get_all_products_by_authenticated_user(self):
         self.authenticate()
         response = self.client.get("/api/v1/products/")
         products = Product.objects.all()
