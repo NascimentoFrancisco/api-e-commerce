@@ -16,7 +16,15 @@ class UserSerializer(serializers.ModelSerializer):
 
         model = User
         ordering = ["created_at"]
-        fields = ["id", "name", "username", "email", "password1", "password2"]
+        fields = [
+            "id",
+            "name",
+            "username",
+            "email",
+            "is_superuser",
+            "password1",
+            "password2",
+        ]
 
     def validate(self, attrs) -> None:
         password1 = attrs.get("password1")

@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from datetime import timedelta
 from decouple import config
 
 
@@ -46,6 +47,10 @@ REST_FRAMEWORK = {
     ],
 }
 
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

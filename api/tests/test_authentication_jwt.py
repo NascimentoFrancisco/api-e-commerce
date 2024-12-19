@@ -1,3 +1,7 @@
+# pylint:disable=missing-function-docstring
+# pylint:disable=missing-class-docstring
+# pylint:disable=no-member
+# pylint:disable=protected-access
 from typing import Dict
 from django.test import TestCase
 from rest_framework import status
