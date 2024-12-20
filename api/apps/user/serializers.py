@@ -70,3 +70,36 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
         model = User
         fields = ["id", "name", "username", "email"]
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    """Serializer for changing the password of the logged-in use"""
+
+    password = serializers.CharField(write_only=True, required=True)
+    password2 = serializers.CharField(write_only=True, required=True)
+
+    def validate(self, attrs):
+        password1 = attrs.get("password")
+        password2 = attrs.get("password2")
+        user = self.context.get("request").user
+
+        if password1 != password2:
+            raise serializers.ValidationError({"password2": "Senhas diferentes"})
+
+        try:
+            password_validation.validate_password(password=password1, user=user)
+        except exceptions.ValidationError as exception:
+            raise serializers.ValidationError({"password": list(exception)})
+
+        return super(ChangePasswordSerializer, self).validate(attrs)
+
+    def create(self, validated_data):
+        """Method not used as this serializer only updates the password"""
+        raise NotImplementedError(
+            "The 'create' method is not supported for this serializer."
+        )
+
+    def update(self, instance: User, validated_data):
+        instance.set_password(validated_data["password"])
+        instance.save()
+        return instance

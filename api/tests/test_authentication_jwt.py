@@ -38,7 +38,7 @@ class AuthenticationJwtTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(
             response_dict["detail"],
-            "No active account found with the given credentials",
+            "Usuário e/ou senha incorreto(s)",
         )
         self.assertFalse("access" in response_dict.keys())
         self.assertFalse("refresh" in response_dict.keys())
