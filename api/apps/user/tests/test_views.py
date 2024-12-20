@@ -83,3 +83,63 @@ class UserViewsTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), serializer.data)
+
+    def test_change_password_different_passwords(self):
+        self.authenticate()
+        data = {"password": "ads123#", "password2": "ads1234@#"}
+        response = self.client.put(
+            "/api/v1/user/change-password/",
+            json.dumps(data),
+            content_type="application/json",
+        )
+        response_dict = response.json()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response_dict["password2"][0], "Senhas diferentes")
+
+    def test_change_password_not_authenticate(self):
+        data = {"password": "ads123#", "password2": "ads123#"}
+        response = self.client.put(
+            "/api/v1/user/change-password/",
+            json.dumps(data),
+            content_type="application/json",
+        )
+        response_dict = response.json()
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(
+            response_dict["detail"],
+            "As credenciais de autenticação não foram fornecidas.",
+        )
+
+    def test_change_password_fragile(self):
+        self.authenticate()
+        data = {"password": "ads123#", "password2": "ads123#"}
+        response = self.client.put(
+            "/api/v1/user/change-password/",
+            json.dumps(data),
+            content_type="application/json",
+        )
+
+        response_dict = response.json()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response_dict["password"],
+            ["Esta senha é muito curta. Ela precisa conter pelo menos 8 caracteres."],
+        )
+
+    def teste_change_password_correct(self):
+        self.authenticate()
+        data = {"password": "ads1234#", "password2": "ads1234#"}
+        response = self.client.put(
+            "/api/v1/user/change-password/",
+            json.dumps(data),
+            content_type="application/json",
+        )
+
+        user = User.objects.get(id=self.user.id)
+        response_dict = response.json()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response_dict["detail"], "Senha alterada com sucesso!")
+        self.assertFalse(user.check_password("teste#123"))
+        self.assertTrue(user.check_password("ads1234#"))
