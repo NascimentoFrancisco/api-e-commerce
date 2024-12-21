@@ -82,6 +82,12 @@ FIREBASE_CREDENTIALS = {
 FIREBASE_STORAGE_BUCKET = config("BUCKET_NAME")
 FIREBASE_PATH = config("FIREBASE_PATH")
 
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    }
+}
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
