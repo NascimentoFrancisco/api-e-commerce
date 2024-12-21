@@ -28,6 +28,7 @@ class AuthenticationJwtTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue("access" in response_dict.keys())
         self.assertTrue("refresh" in response_dict.keys())
+        self.assertTrue("user_id" in response_dict.keys())
 
     def test_get_token_wrong(self):
         data = {"username": "teste", "password": "teste#1235"}
