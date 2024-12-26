@@ -1,5 +1,6 @@
 # pylint: disable=no-member
 from rest_framework import viewsets
+from rest_framework.filters import SearchFilter
 from rest_framework.exceptions import ValidationError
 from api.apps.shopping.models import Shopping
 from api.apps.products.models import Product
@@ -13,6 +14,8 @@ class ShoppingView(viewsets.ModelViewSet):
     queryset = Shopping.objects.all()
     serializer_class = ShoppingSerializer
     permission_classes = [IsAuthenticatedOrSuperUserForDelete]
+    filter_backends = [SearchFilter]
+    search_fields = ["user__id"]
 
     def perform_create(self, serializer):
         product: Product = serializer.validated_data["product"]
