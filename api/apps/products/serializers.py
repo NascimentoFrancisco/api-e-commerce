@@ -13,7 +13,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     id = serializers.UUIDField(read_only=True)
     user = UserSerializer(read_only=True)
-    slug = serializers.CharField(read_only=True)
+    slug = serializers.SlugField(read_only=True)
     image = serializers.ImageField(write_only=True, required=True)
     image_url = serializers.URLField(read_only=True)
 
@@ -41,7 +41,7 @@ class ProductSerializer(serializers.ModelSerializer):
         validated_data["user"] = user
 
         image: InMemoryUploadedFile = validated_data.pop("image")
-        name: str = validated_data.pop("name")
+        name: str = validated_data["name"]
         image_name_to_save = slugify(name)
 
         try:
