@@ -58,6 +58,17 @@ class ShoppingCartViewTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+    def test_create_shopping_cart_existing_product(self):
+        self.authenticate()
+        data = {"product_id": self.product.id, "status": True}
+        response = self.client.post("/api/v1/shopping-cart/", data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json()["detail"],
+            "O produto já está no carrinho para este usuário.",
+        )
+
     def test_get_shopping_cart(self):
         self.authenticate()
         response = self.client.get(f"/api/v1/shopping-cart/{self.shopping_cart.id}/")
