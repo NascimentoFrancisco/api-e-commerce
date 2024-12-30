@@ -12,7 +12,7 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
 
     id = serializers.UUIDField(read_only=True)
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    product = ProductSerializer(read_only=True)
+    product = serializers.SerializerMethodField(read_only=True)
     product_id = serializers.PrimaryKeyRelatedField(
         queryset=Product.objects.all(), source="product", write_only=True
     )
@@ -23,6 +23,10 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
         model = ShoppingCart
         ordering = ["created_at"]
         fields = ["id", "user", "product", "product_id", "status"]
+
+    def get_product(self, obj):
+        # Retorna a representação do produto usando o ProductSerializer
+        return ProductSerializer(obj.product).data
 
     def create(self, validated_data):
         user = self.context["request"].user
