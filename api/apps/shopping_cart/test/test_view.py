@@ -45,6 +45,17 @@ class ShoppingCartViewTest(TestCase):
         )
         self.product.save()
 
+        self.product2 = Product(
+            name="Tests",
+            user=self.user,
+            description="Testings",
+            category=self.category,
+            amount=12,
+            price=12.34,
+            image_url=MY_GITHUB_PROFILE_PICTURE_URL,
+        )
+        self.product2.save()
+
         self.shopping_cart = ShoppingCart(user=self.user, product=self.product)
         self.shopping_cart.save()
 
@@ -53,10 +64,21 @@ class ShoppingCartViewTest(TestCase):
 
     def test_create(self):
         self.authenticate()
-        data = {"product_id": self.product.id, "status": True}
+        data = {"product_id": self.product2.id, "status": True}
         response = self.client.post("/api/v1/shopping-cart/", data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_shopping_cart_existing_product(self):
+        self.authenticate()
+        data = {"product_id": self.product.id, "status": True}
+        response = self.client.post("/api/v1/shopping-cart/", data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json()["detail"],
+            "O produto já está no carrinho para este usuário.",
+        )
 
     def test_get_shopping_cart(self):
         self.authenticate()

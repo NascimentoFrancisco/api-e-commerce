@@ -25,3 +25,4 @@ class ShoppingCart(models.Model):
         ordering = ["created_at"]
         verbose_name = "Carrinho"
         verbose_name_plural = "carrinhos"
+        unique_together = ["user", "product"]
