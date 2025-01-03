@@ -31,6 +31,7 @@ class ShoppingSerializer(serializers.ModelSerializer):
             "product_id",
             "quantity_products",
             "status",
+            "cancelled",
             "payment_status",
             "created_at",
             "updated_at",

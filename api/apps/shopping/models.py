@@ -18,6 +18,7 @@ class Shopping(models.Model):
         verbose_name="Quantidade de produtos", default=0
     )
     status = models.BooleanField(verbose_name="Finalizada ou em aberto", default=True)
+    cancelled = models.BooleanField(verbose_name="Cancelada ou não", default=False)
     payment_status = models.BooleanField(
         verbose_name="Pagamento pendente ou finalizado", default=False
     )
