@@ -70,6 +70,7 @@ class ShoppingViewTest(TestCase):
             "product_id": self.product2.id,
             "quantity_products": 18,
             "status": True,
+            "cancelled": False,
             "payment_status": False,
         }
         response = self.client.post("/api/v1/shopping/", data)
@@ -86,6 +87,7 @@ class ShoppingViewTest(TestCase):
             "product_id": self.product2.id,
             "quantity_products": 1,
             "status": True,
+            "cancelled": False,
             "payment_status": False,
         }
         response = self.client.post("/api/v1/shopping/", data)
@@ -110,6 +112,7 @@ class ShoppingViewTest(TestCase):
         self.assertEqual(
             shopping_response["payment_status"], self.shopping.payment_status
         )
+        self.assertEqual(shopping_response["cancelled"], self.shopping.cancelled)
 
     def test_get_all_shoppings(self):
         self.authenticate()
@@ -130,6 +133,7 @@ class ShoppingViewTest(TestCase):
             self.assertEqual(
                 shopping_response[index]["payment_status"], shopping.payment_status
             )
+            self.assertEqual(shopping_response[index]["cancelled"], shopping.cancelled)
 
     def test_update_shopping(self):
         self.authenticate()

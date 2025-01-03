@@ -63,6 +63,9 @@ class ShoppingModelTest(TestCase):
     def test_default_value_status(self):
         self.assertTrue(self.shopping.status)
 
+    def test_defaulft_value_cancelled(self):
+        self.assertFalse(self.shopping.cancelled)
+
     def test_default_payment_status(self):
         self.assertFalse(self.shopping.payment_status)
 
