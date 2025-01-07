@@ -19,7 +19,7 @@ class Payment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name="Usuário que cadastrou",
+        verbose_name="Usuário que está pagando",
         on_delete=models.PROTECT,
     )
     shopping = models.ForeignKey(
@@ -27,7 +27,7 @@ class Payment(models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        verbose_name="Categoria a qual o produto pertence",
+        verbose_name="Compra a qual o pagamento é referente",
     )
     payment_method = models.CharField(
         max_length=3,
