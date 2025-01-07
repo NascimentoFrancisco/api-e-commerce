@@ -19,7 +19,7 @@ class Payment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name="Usuário que cadstrou",
+        verbose_name="Usuário que cadastrou",
         on_delete=models.PROTECT,
     )
     shopping = models.ForeignKey(

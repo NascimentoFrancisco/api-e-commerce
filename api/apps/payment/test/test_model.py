@@ -78,3 +78,10 @@ class PyamentModelTest(TestCase):
 
     def test_updated_at(self):
         self.assertIsInstance(self.payment.updated_at, datetime)
+
+    def test_update_payment_status_after_delete(self):
+        shopping_id = self.payment.shopping.id
+        self.payment.delete()
+        shopping = Shopping.objects.get(pk=shopping_id)
+
+        self.assertFalse(shopping.payment_status)
