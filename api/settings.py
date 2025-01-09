@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "api.apps.products",
     "api.apps.shopping",
     "api.apps.shopping_cart",
+    "api.apps.payment",
     "api.apps.address",
     "api.apps.user",
 ]

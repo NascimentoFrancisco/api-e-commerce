@@ -41,5 +41,6 @@ urlpatterns = [
         name="shopping-cart",
     ),
     path("api/v1/shopping/", include("api.apps.shopping.urls"), name="shopping"),
+    path("api/v1/payment/", include("api.apps.payment.urls"), name="payment"),
     path("api/v1/address/", include("api.apps.address.urls"), name="address"),
 ]
