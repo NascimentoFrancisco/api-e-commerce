@@ -7,6 +7,7 @@ from django.test import TestCase
 from api.apps.user.models import User
 from api.apps.categories.models import Categories
 from api.apps.products.models import Product
+from api.apps.address.models import Address
 from api.apps.shopping.models import Shopping
 
 MY_GITHUB_PROFILE_PICTURE_URL = """
@@ -37,8 +38,24 @@ class ShoppingModelTest(TestCase):
         )
         self.product.save()
 
+        self.address = Address(
+            user=self.user,
+            cep="65840000",
+            city="São Raimundo das Mangabeiras",
+            state="Maranhão",
+            district="Bairro",
+            street="Rua ruim",
+            number=22,
+            complement="Casa",
+            phone_number="99999999999",
+        )
+        self.address.save()
+
         self.shopping = Shopping(
-            user=self.user, product=self.product, quantity_products=2
+            user=self.user,
+            product=self.product,
+            quantity_products=2,
+            address=self.address,
         )
         self.shopping.save()
 
@@ -53,6 +70,9 @@ class ShoppingModelTest(TestCase):
 
     def test_user_value(self):
         self.assertIsInstance(self.product.user, User)
+
+    def test_address_value(self):
+        self.assertIsInstance(self.shopping.address, Address)
 
     def test_status_shopping_cart(self):
         self.assertTrue(self.shopping.status)

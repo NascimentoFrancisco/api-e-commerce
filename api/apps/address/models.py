@@ -27,7 +27,7 @@ class Address(models.Model):
         help_text="Deixar '0' caso não tenha número no endereço.",
     )
     complement = models.CharField(
-        verbose_name="Rua/Avenida", max_length=255, blank=False, null=False
+        verbose_name="Complemento", max_length=255, blank=False, null=False
     )
     phone_number = models.CharField(
         verbose_name="Telefone", max_length=11, blank=False, null=False

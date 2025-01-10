@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from api.apps.products.models import Product
+from api.apps.address.models import Address
 
 
 class Shopping(models.Model):
@@ -21,6 +22,13 @@ class Shopping(models.Model):
     cancelled = models.BooleanField(verbose_name="Cancelada ou não", default=False)
     payment_status = models.BooleanField(
         verbose_name="Pagamento pendente ou finalizado", default=False
+    )
+    address = models.ForeignKey(
+        Address,
+        verbose_name="Endereço",
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
