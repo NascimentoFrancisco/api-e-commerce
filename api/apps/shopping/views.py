@@ -38,10 +38,22 @@ class ShoppingView(viewsets.ModelViewSet):
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(
-        request_body=ShoppingCreateUpdateSerializer, responses={201: ShoppingSerializer}
+        request_body=ShoppingCreateUpdateSerializer, responses={200: ShoppingSerializer}
     )
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        response_serializer = ShoppingSerializer(instance)
+        return Response(response_serializer.data)
+
+    @swagger_auto_schema(
+        request_body=ShoppingCreateUpdateSerializer, responses={200: ShoppingSerializer}
+    )
+    def partial_update(self, request, *args, **kwargs):
+        partial = kwargs.pop("partial", True)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
