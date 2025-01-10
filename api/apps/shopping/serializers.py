@@ -1,8 +1,8 @@
 # pylint: disable=no-member
 from rest_framework import serializers
 from api.apps.shopping.models import Shopping
-from api.apps.products.models import Product
 from api.apps.products.serializers import ProductSerializer
+from api.apps.address.serializers import AddressSerializer
 
 
 class ShoppingSerializer(serializers.ModelSerializer):
@@ -11,9 +11,7 @@ class ShoppingSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     product = ProductSerializer(read_only=True)
-    product_id = serializers.PrimaryKeyRelatedField(
-        queryset=Product.objects.all(), source="product", write_only=True
-    )
+    address = AddressSerializer(read_only=True)
     slug = serializers.SlugField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
@@ -28,13 +26,30 @@ class ShoppingSerializer(serializers.ModelSerializer):
             "slug",
             "user",
             "product",
-            "product_id",
             "quantity_products",
             "status",
             "cancelled",
             "payment_status",
+            "address",
             "created_at",
             "updated_at",
+        ]
+
+
+class ShoppingCreateUpdateSerializer(serializers.ModelSerializer):
+    """Serializer only for creating and editing Malls"""
+
+    class Meta:
+        """Meta class of this serializer"""
+
+        model = Shopping
+        fields = [
+            "product",
+            "quantity_products",
+            "status",
+            "cancelled",
+            "payment_status",
+            "address",
         ]
 
     def create(self, validated_data):

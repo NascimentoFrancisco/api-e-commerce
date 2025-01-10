@@ -10,6 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from api.apps.user.models import User
 from api.apps.categories.models import Categories
 from api.apps.products.models import Product
+from api.apps.address.models import Address
 from api.apps.shopping.models import Shopping
 
 MY_GITHUB_PROFILE_PICTURE_URL = """
@@ -56,8 +57,24 @@ class ShoppingViewTest(TestCase):
         )
         self.product2.save()
 
+        self.address = Address(
+            user=self.user,
+            cep="65840000",
+            city="São Raimundo das Mangabeiras",
+            state="Maranhão",
+            district="Bairro",
+            street="Rua ruim",
+            number=22,
+            complement="Casa",
+            phone_number="99999999999",
+        )
+        self.address.save()
+
         self.shopping = Shopping(
-            user=self.user, product=self.product, quantity_products=2
+            user=self.user,
+            product=self.product,
+            quantity_products=2,
+            address=self.address,
         )
         self.shopping.save()
 
@@ -67,10 +84,11 @@ class ShoppingViewTest(TestCase):
     def test_create_insufficient_amount_products(self):
         self.authenticate()
         data = {
-            "product_id": self.product2.id,
+            "product": self.product2.id,
             "quantity_products": 18,
             "status": True,
             "cancelled": False,
+            "address": self.address.id,
             "payment_status": False,
         }
         response = self.client.post("/api/v1/shopping/", data)
@@ -84,10 +102,11 @@ class ShoppingViewTest(TestCase):
     def test_create(self):
         self.authenticate()
         data = {
-            "product_id": self.product2.id,
+            "product": self.product2.id,
             "quantity_products": 1,
             "status": True,
             "cancelled": False,
+            "address": self.address.id,
             "payment_status": False,
         }
         response = self.client.post("/api/v1/shopping/", data)
@@ -105,6 +124,9 @@ class ShoppingViewTest(TestCase):
         self.assertEqual(shopping_response["user"], str(self.shopping.user.id))
         self.assertEqual(
             shopping_response["product"]["id"], str(self.shopping.product.id)
+        )
+        self.assertEqual(
+            shopping_response["address"]["id"], str(self.shopping.address.id)
         )
         self.assertEqual(
             shopping_response["quantity_products"], self.shopping.quantity_products
@@ -125,6 +147,9 @@ class ShoppingViewTest(TestCase):
             self.assertEqual(shopping_response[index]["user"], str(shopping.user.id))
             self.assertEqual(
                 shopping_response[index]["product"]["id"], str(shopping.product.id)
+            )
+            self.assertEqual(
+                shopping_response[index]["address"]["id"], str(shopping.address.id)
             )
             self.assertEqual(
                 shopping_response[index]["quantity_products"],
