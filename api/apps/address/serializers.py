@@ -31,6 +31,25 @@ class AddressSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
+
+class CreateUpdateAddressSerializer(serializers.ModelSerializer):
+    """Serializer to create and update Address"""
+
+    class Meta:
+        """Meta class of the serializer"""
+
+        model = Address
+        fields = [
+            "cep",
+            "city",
+            "state",
+            "district",
+            "street",
+            "number",
+            "complement",
+            "phone_number",
+        ]
+
     def create(self, validated_data):
         user = self.context["request"].user
         validated_data["user"] = user
