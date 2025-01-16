@@ -8,6 +8,7 @@ from api.apps.user.models import User
 from api.apps.categories.models import Categories
 from api.apps.products.models import Product
 from api.apps.shopping.models import Shopping
+from api.apps.address.models import Address
 from api.apps.payment.models import Payment, PaymentMethods
 
 MY_GITHUB_PROFILE_PICTURE_URL = """
@@ -42,8 +43,26 @@ class PyamentModelTest(TestCase):
         )
         self.product.save()
 
+        self.address = Address(
+            user=self.user,
+            cep="65840000",
+            city="São Raimundo das Mangabeiras",
+            state="Maranhão",
+            district="Bairro",
+            street="Rua ruim",
+            number=22,
+            complement="Casa",
+            phone_number="99999999999",
+        )
+        self.address.save()
+
         self.shopping = Shopping(
-            user=self.user, product=self.product, quantity_products=2
+            user=self.user,
+            product=self.product,
+            quantity_products=2,
+            value=self.product.price * 2,
+            shipping_value=3.4,
+            address=self.address,
         )
         self.shopping.save()
 

@@ -74,6 +74,8 @@ class ShoppingViewTest(TestCase):
             user=self.user,
             product=self.product,
             quantity_products=2,
+            value=self.product.price * 2,
+            shipping_value=3.4,
             address=self.address,
         )
         self.shopping.save()
@@ -86,6 +88,8 @@ class ShoppingViewTest(TestCase):
         data = {
             "product": self.product2.id,
             "quantity_products": 18,
+            "value": self.product2.price * 2,
+            "shipping_value": 3.4,
             "status": True,
             "cancelled": False,
             "address": self.address.id,
@@ -104,6 +108,8 @@ class ShoppingViewTest(TestCase):
         data = {
             "product": self.product2.id,
             "quantity_products": 1,
+            "value": self.product2.price * 2,
+            "shipping_value": 3.4,
             "status": True,
             "cancelled": False,
             "address": self.address.id,
