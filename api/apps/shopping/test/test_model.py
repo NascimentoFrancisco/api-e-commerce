@@ -55,6 +55,8 @@ class ShoppingModelTest(TestCase):
             user=self.user,
             product=self.product,
             quantity_products=2,
+            value=self.product.price * 2,
+            shipping_value=3.4,
             address=self.address,
         )
         self.shopping.save()
@@ -76,6 +78,10 @@ class ShoppingModelTest(TestCase):
 
     def test_status_shopping_cart(self):
         self.assertTrue(self.shopping.status)
+
+    def test_value_value_shipping(self):
+        self.assertEqual(self.shopping.value, self.product.price * 2)
+        self.assertEqual(self.shopping.shipping_value, 3.4)
 
     def test_slug_value(self):
         self.assertEqual(self.shopping.slug, "test-test")

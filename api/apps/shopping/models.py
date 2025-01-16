@@ -18,6 +18,12 @@ class Shopping(models.Model):
     quantity_products = models.PositiveIntegerField(
         verbose_name="Quantidade de produtos", default=0
     )
+    value = models.DecimalField(
+        verbose_name="Valor da compra", max_digits=24, decimal_places=2, default=0
+    )
+    shipping_value = models.DecimalField(
+        verbose_name="Valor do frete", max_digits=24, decimal_places=2, default=0
+    )
     status = models.BooleanField(verbose_name="Finalizada ou em aberto", default=True)
     cancelled = models.BooleanField(verbose_name="Cancelada ou não", default=False)
     payment_status = models.BooleanField(
